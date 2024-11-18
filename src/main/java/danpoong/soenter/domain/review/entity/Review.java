@@ -1,7 +1,7 @@
 package danpoong.soenter.domain.review.entity;
 
-import goorm.ssoenter.domain.enterprise.entity.Enterprise;
-import goorm.ssoenter.domain.user.entity.User;
+import danpoong.soenter.domain.enterprise.entity.Enterprise;
+import danpoong.soenter.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
