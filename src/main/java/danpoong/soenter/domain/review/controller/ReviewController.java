@@ -1,8 +1,8 @@
 package danpoong.soenter.domain.review.controller;
 
 import danpoong.soenter.base.ApiResponse;
+import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.GetEnterpriseReviewResponse;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.MyReviewsWrapperResponse;
-import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.GetMyReviewResponse;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.PostReviewResponse;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewRequest.PostReviewRequest;
 import danpoong.soenter.domain.review.service.ReviewService;
@@ -56,5 +56,14 @@ public class ReviewController {
     public ApiResponse<String> deleteReview(@PathVariable Long reviewId, Authentication authentication) {
         reviewService.deleteReview(reviewId, authentication.getName());
         return ApiResponse.onSuccess(null);
+    }
+
+    @GetMapping("/{enterpriseId}/enterprises")
+    @Operation(summary = "기업 리뷰 조회 API", description = "특정 기업에 대한 모든 리뷰를 조회합니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    public ApiResponse<List<GetEnterpriseReviewResponse>> getEnterpriseReviews(@PathVariable Long enterpriseId, Authentication authentication) {
+        List<GetEnterpriseReviewResponse> response = reviewService.getEnterpriseReviews(enterpriseId, authentication.getName());
+        return ApiResponse.onSuccess(response);
     }
 }

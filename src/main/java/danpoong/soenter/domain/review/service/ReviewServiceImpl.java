@@ -5,6 +5,7 @@ import danpoong.soenter.domain.enterprise.entity.Visit;
 import danpoong.soenter.domain.enterprise.repository.EnterpriseRepository;
 import danpoong.soenter.domain.enterprise.repository.VisitRepository;
 import danpoong.soenter.domain.review.converter.ReviewConverter;
+import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.GetEnterpriseReviewResponse;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.MyReviewsWrapperResponse;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.GetMyReviewResponse;
 import danpoong.soenter.domain.review.entity.Review;
@@ -123,5 +124,20 @@ public class ReviewServiceImpl implements ReviewService {
         tagListRepository.deleteAll(tagListRepository.findByReview(review)); // 관련 태그 삭제
         reviewRepository.delete(review); // 리뷰 삭제
         return "성공!";
+    }
+
+    @Transactional(readOnly = true)
+    public List<GetEnterpriseReviewResponse> getEnterpriseReviews(Long enterpriseId, String userId) {
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
+
+        Enterprise enterprise = enterpriseRepository.findById(enterpriseId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 기업입니다."));
+
+        List<Review> reviews = reviewRepository.findByEnterprise(enterprise);
+
+        return reviews.stream()
+                .map(review -> ReviewConverter.toEnterpriseReviewResponse(review, tagListRepository.findByReview(review)))
+                .collect(Collectors.toList());
     }
 }
