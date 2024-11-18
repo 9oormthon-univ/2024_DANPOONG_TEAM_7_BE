@@ -45,4 +45,9 @@ public class Review {
     public void updateTagNum(int count) {
         this.tagNum = count;
     }
+
+    public void updateContent(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
