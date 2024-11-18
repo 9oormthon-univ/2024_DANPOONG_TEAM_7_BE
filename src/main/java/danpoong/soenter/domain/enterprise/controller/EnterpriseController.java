@@ -1,6 +1,7 @@
-package danpoong.soenter.domain.enterprise;
+package danpoong.soenter.domain.enterprise.controller;
 
 import danpoong.soenter.base.ApiResponse;
+import danpoong.soenter.domain.enterprise.service.EnterpriseService;
 import danpoong.soenter.domain.enterprise.entity.Enterprise;
 import danpoong.soenter.domain.enterprise.entity.Region;
 import io.swagger.v3.oas.annotations.Operation;
