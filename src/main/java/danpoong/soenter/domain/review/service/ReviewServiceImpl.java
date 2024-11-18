@@ -78,4 +78,32 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviews(reviewResponses)
                 .build();
     }
+
+    @Transactional
+    public PostReviewResponse updateReview(Long reviewId, PostReviewRequest postReviewRequest, String userId) {
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 리뷰입니다."));
+
+        if (!review.getUser().getUserId().equals(user.getUserId())) {
+            throw new RuntimeException("사용자가 작성한 리뷰가 아닙니다.");
+        }
+
+        // 리뷰 내용 수정
+        review.updateContent(postReviewRequest.getTitle(), postReviewRequest.getContent());
+        tagListRepository.deleteAll(tagListRepository.findByReview(review)); // 기존 태그 삭제
+
+        // 새로운 태그 저장
+        postReviewRequest.getTagNumbers().forEach(tagNum -> {
+            TagList tag = ReviewConverter.toTagList(review, tagNum);
+            tagListRepository.save(tag);
+        });
+
+        review.updateTagNum(postReviewRequest.getTagNumbers().size()); // 태그 개수 업데이트
+        reviewRepository.save(review);
+
+        return ReviewConverter.toReviewResponse(review);
+    }
 }

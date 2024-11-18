@@ -40,4 +40,14 @@ public class ReviewController {
         MyReviewsWrapperResponse response = reviewService.getMyReviews(authentication.getName());
         return ApiResponse.onSuccess(response);
     }
+
+    @PutMapping("/{reviewId}")
+    @Operation(summary = "리뷰 수정 API", description = "사용자가 작성한 리뷰를 수정합니다.")
+    public ApiResponse<PostReviewResponse> updateReview(
+            @PathVariable Long reviewId,
+            @RequestBody @Valid PostReviewRequest postReviewRequest,
+            Authentication authentication) {
+        PostReviewResponse response = reviewService.updateReview(reviewId, postReviewRequest, authentication.getName());
+        return ApiResponse.onSuccess(response);
+    }
 }
