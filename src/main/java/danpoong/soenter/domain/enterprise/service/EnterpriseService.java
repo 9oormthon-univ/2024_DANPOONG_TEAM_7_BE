@@ -1,4 +1,4 @@
-package danpoong.soenter.domain.enterprise;
+package danpoong.soenter.domain.enterprise.service;
 
 import danpoong.soenter.base.ApiResponse;
 import danpoong.soenter.domain.enterprise.entity.Enterprise;

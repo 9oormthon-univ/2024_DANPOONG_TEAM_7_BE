@@ -41,4 +41,8 @@ public class Review {
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TagList> tagList;
+
+    public void updateTagNum(int count) {
+        this.tagNum = count;
+    }
 }

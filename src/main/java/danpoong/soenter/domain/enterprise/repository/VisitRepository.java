@@ -1,0 +1,7 @@
+package danpoong.soenter.domain.enterprise.repository;
+
+import danpoong.soenter.domain.enterprise.entity.Visit;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface VisitRepository extends JpaRepository<Visit, Long> {
+}
