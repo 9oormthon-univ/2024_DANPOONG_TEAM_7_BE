@@ -1,4 +1,5 @@
 package danpoong.soenter.domain.review.service;
+import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.GetEnterpriseReviewResponse;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.MyReviewsWrapperResponse;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewRequest.PostReviewRequest;
 import danpoong.soenter.domain.review.dto.ReviewDTO.ReviewResponse.PostReviewResponse;
@@ -10,4 +11,5 @@ public interface ReviewService {
     public MyReviewsWrapperResponse getMyReviews(String userId);
     public PostReviewResponse updateReview(Long reviewId, PostReviewRequest postReviewRequest, String userId);
     String deleteReview(Long reviewId, String userId);
+    List<GetEnterpriseReviewResponse> getEnterpriseReviews(Long enterpriseId, String userId);
 }

@@ -56,5 +56,16 @@ public class ReviewDTO {
             private Integer totalReviewCount;
             private List<GetMyReviewResponse> reviews;
         }
+
+        @Getter
+        @Builder
+        public static class GetEnterpriseReviewResponse {
+            private Long reviewId;
+            private String userName;
+            private String content;
+            private LocalDate createAt;
+            private Integer tagCount;
+            private List<Integer> tagNumbers;
+        }
     }
 }
