@@ -1,7 +1,7 @@
 # Kakao 설정
 kakao:
   client_id: ${KAKAO_CLIENT_ID}
-  redirect_uri: http://localhost:8080/api/kakao/callback
+  redirect_uri: https://api.ssoenter.store/api/kakao/callback
   get_code_path: https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=
 
 # MySQL 연결 설정
