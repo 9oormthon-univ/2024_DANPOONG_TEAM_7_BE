@@ -8,7 +8,7 @@ RUN apk add --no-cache tzdata \
     && echo "${TZ}" > /etc/timezone
 
 # JAR 파일 복사
-ARG JAR_FILE=build/libs/ssoenter-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=build/libs/soenter-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 
 # JVM 시간대 설정을 포함한 애플리케이션 실행
