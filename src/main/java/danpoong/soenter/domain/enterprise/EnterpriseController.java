@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/enterprises")
+@RequestMapping("/api/enterprises")
 @Tag(name = "Enterprise 컨트롤러", description = "기업 정보 관련 API")
 public class EnterpriseController {
 
