@@ -106,4 +106,22 @@ public class ReviewServiceImpl implements ReviewService {
 
         return ReviewConverter.toReviewResponse(review);
     }
+
+    @Transactional
+    public String deleteReview(Long reviewId, String userId) {
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 리뷰입니다."));
+
+        if (!review.getUser().getUserId().equals(user.getUserId())) {
+            throw new RuntimeException("사용자가 작성한 리뷰가 아닙니다.");
+        }
+
+        // 리뷰 삭제
+        tagListRepository.deleteAll(tagListRepository.findByReview(review)); // 관련 태그 삭제
+        reviewRepository.delete(review); // 리뷰 삭제
+        return "성공!";
+    }
 }
