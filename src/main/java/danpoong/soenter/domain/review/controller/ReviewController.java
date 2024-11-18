@@ -50,4 +50,11 @@ public class ReviewController {
         PostReviewResponse response = reviewService.updateReview(reviewId, postReviewRequest, authentication.getName());
         return ApiResponse.onSuccess(response);
     }
+
+    @DeleteMapping("/{reviewId}")
+    @Operation(summary = "리뷰 삭제 API", description = "사용자가 작성한 리뷰를 삭제합니다.")
+    public ApiResponse<String> deleteReview(@PathVariable Long reviewId, Authentication authentication) {
+        reviewService.deleteReview(reviewId, authentication.getName());
+        return ApiResponse.onSuccess(null);
+    }
 }

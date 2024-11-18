@@ -9,4 +9,5 @@ public interface ReviewService {
     public PostReviewResponse createReview(PostReviewRequest postReviewRequest, String userId);
     public MyReviewsWrapperResponse getMyReviews(String userId);
     public PostReviewResponse updateReview(Long reviewId, PostReviewRequest postReviewRequest, String userId);
+    String deleteReview(Long reviewId, String userId);
 }
