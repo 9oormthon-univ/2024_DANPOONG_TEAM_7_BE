@@ -36,5 +36,25 @@ public class ReviewDTO {
             private String content;
             private LocalDate createAt;
         }
+
+        @Getter
+        @Builder
+        public static class GetMyReviewResponse {
+            private Long reviewId;
+            private String enterpriseName;
+            private String enterpriseAddress;
+            private String content;
+            private LocalDate createAt;
+            private Integer tagCount;
+            private List<Integer> tagNumbers;
+        }
+
+        @Getter
+        @Builder
+        public static class MyReviewsWrapperResponse {
+            private String userName;
+            private Integer totalReviewCount;
+            private List<GetMyReviewResponse> reviews;
+        }
     }
 }
