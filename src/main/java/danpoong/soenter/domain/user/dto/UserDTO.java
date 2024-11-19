@@ -21,6 +21,7 @@ public class UserDTO {
         public static class GetUserDetailResponse {
             private String name;
             private String email;
+            private LocalDate birth;
         }
 
         @Getter

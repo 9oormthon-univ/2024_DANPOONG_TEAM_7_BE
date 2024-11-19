@@ -9,6 +9,7 @@ public class UserConverter {
         return GetUserDetailResponse.builder()
                 .name(user.getName())
                 .email(user.getEmail())
+                .birth(user.getBirth())
                 .build();
     }
 
