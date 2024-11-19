@@ -1,9 +1,7 @@
 package danpoong.soenter.domain.likes.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 public class LikesDTO {
 
@@ -16,6 +14,8 @@ public class LikesDTO {
             private String city;
             private String district;
             private String website;
+            private Double latitude;
+            private Double longitude;
         }
     }
 }
