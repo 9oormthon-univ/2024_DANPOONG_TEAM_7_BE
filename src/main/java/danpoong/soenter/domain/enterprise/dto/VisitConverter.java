@@ -10,6 +10,8 @@ public class VisitConverter {
                 .city(enterprise.getCity())
                 .district(enterprise.getDistrict())
                 .website(enterprise.getWebsite())
+                .latitude(enterprise.getLatitude())
+                .longitude(enterprise.getLongitude())
                 .build();
     }
 }
