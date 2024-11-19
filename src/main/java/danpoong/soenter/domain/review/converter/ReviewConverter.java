@@ -27,7 +27,6 @@ public class ReviewConverter {
         return Review.builder()
                 .user(user)
                 .enterprise(enterprise)
-                .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .createAt(LocalDate.now())
                 .build();
@@ -43,7 +42,6 @@ public class ReviewConverter {
     public static PostReviewResponse toReviewResponse(Review review) {
         return PostReviewResponse.builder()
                 .reviewId(review.getReviewId())
-                .title(review.getTitle())
                 .content(review.getContent())
                 .createAt(review.getCreateAt())
                 .build();

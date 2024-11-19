@@ -13,6 +13,8 @@ public class VisitDTO {
             private String city;
             private String district;
             private String website;
+            private Double latitude;
+            private Double longitude;
         }
     }
 }
