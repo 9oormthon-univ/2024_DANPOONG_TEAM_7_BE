@@ -3,6 +3,8 @@ package danpoong.soenter.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Builder
@@ -24,9 +26,15 @@ public class User {
     private String password;
 
     @Column
+    private LocalDate birth;
+
+    @Column
     private String socialType;
 
     @Column
     private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인 : null)
 
+    public void updateBirthDate(LocalDate birth) {
+        this.birth = birth;
+    }
 }
