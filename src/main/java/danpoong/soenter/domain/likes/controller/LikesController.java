@@ -2,11 +2,9 @@ package danpoong.soenter.domain.likes.controller;
 
 import danpoong.soenter.base.ApiResponse;
 import danpoong.soenter.domain.likes.dto.LikesDTO.LikesResponse.GetLikeResponse;
-import danpoong.soenter.domain.likes.dto.LikesDTO.LikesRequest.AddLikeRequest;
 import danpoong.soenter.domain.likes.service.LikesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +19,12 @@ public class LikesController {
 
     private final LikesService likesService;
 
-    @PostMapping
+    @PostMapping("/{enterpriseId}")
     @Operation(summary = "즐겨찾기 추가 API", description = "특정 기업을 즐겨찾기에 추가합니다.")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
-    public ApiResponse<Void> addLike(@RequestBody @Valid AddLikeRequest request, Authentication authentication) {
-        likesService.addLike(authentication.getName(), request.getEnterpriseId());
+    public ApiResponse<Void> addLike(@PathVariable Long enterpriseId, Authentication authentication) {
+        likesService.addLike(authentication.getName(), enterpriseId);
         return ApiResponse.onSuccess(null);
     }
 

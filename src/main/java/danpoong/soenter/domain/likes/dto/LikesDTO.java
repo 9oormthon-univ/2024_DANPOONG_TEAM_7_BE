@@ -1,16 +1,11 @@
 package danpoong.soenter.domain.likes.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class LikesDTO {
-    public static class LikesRequest {
-        @Getter
-        @Builder
-        public static class AddLikeRequest {
-            private Long enterpriseId;
-        }
-    }
 
     public static class LikesResponse {
         @Getter
