@@ -32,7 +32,6 @@ public class ReviewDTO {
         @Builder
         public static class PostReviewResponse {
             private Long reviewId;
-            private String title;
             private String content;
             private LocalDate createAt;
         }
