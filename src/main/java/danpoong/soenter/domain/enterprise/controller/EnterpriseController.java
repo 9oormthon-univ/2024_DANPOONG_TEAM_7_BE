@@ -1,12 +1,14 @@
 package danpoong.soenter.domain.enterprise.controller;
 
 import danpoong.soenter.base.ApiResponse;
+import danpoong.soenter.domain.enterprise.dto.VisitDTO.VisitResponse.GetVisitedEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.service.EnterpriseService;
 import danpoong.soenter.domain.enterprise.entity.Enterprise;
 import danpoong.soenter.domain.enterprise.entity.Region;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +28,14 @@ public class EnterpriseController {
     @GetMapping("/{region}")
     public ApiResponse<List<Enterprise>> getEnterprisesByRegion(@PathVariable("region") Region region) {
         return enterpriseService.getEnterprisesByRegion(region);
+    }
+
+    @GetMapping("/users/visit")
+    @Operation(summary = "사용자가 방문한 기업 조회 API", description = "사용자가 방문한 모든 기업을 조회합니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    public ApiResponse<List<GetVisitedEnterpriseResponse>> getVisitedEnterprises(Authentication authentication) {
+        List<GetVisitedEnterpriseResponse>response = enterpriseService.getVisitedEnterprises(authentication.getName());
+        return ApiResponse.onSuccess(response);
     }
 }
