@@ -12,6 +12,7 @@ public class LikesDTO {
             private Long enterpriseId;
             private String enterpriseName;
             private String city;
+            private String socialPurpose;
             private String district;
             private String website;
             private Double latitude;

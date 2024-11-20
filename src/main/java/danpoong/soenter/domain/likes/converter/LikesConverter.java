@@ -9,6 +9,7 @@ public class LikesConverter {
                 .enterpriseId(enterprise.getEnterpriseId())
                 .enterpriseName(enterprise.getName())
                 .city(enterprise.getCity())
+                .socialPurpose(enterprise.getSocialPurpose())
                 .district(enterprise.getDistrict())
                 .website(enterprise.getWebsite())
                 .latitude(enterprise.getLatitude())

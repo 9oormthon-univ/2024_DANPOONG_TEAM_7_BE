@@ -42,6 +42,7 @@ public class ReviewDTO {
             private Long reviewId;
             private String enterpriseName;
             private String enterpriseAddress;
+            private String socialPurpose;
             private String content;
             private LocalDate createAt;
             private Integer tagCount;

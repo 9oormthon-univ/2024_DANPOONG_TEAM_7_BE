@@ -56,6 +56,7 @@ public class ReviewConverter {
                 .reviewId(review.getReviewId())
                 .enterpriseName(review.getEnterprise().getName())
                 .enterpriseAddress(review.getEnterprise().getCity() + ", " + review.getEnterprise().getDistrict())
+                .socialPurpose(review.getEnterprise().getSocialPurpose())
                 .content(review.getContent())
                 .createAt(review.getCreateAt())
                 .tagCount(tagList.size())
