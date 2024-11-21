@@ -9,17 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 @Tag(name = "Kakao Login 컨트롤러", description = "카카오 로그인 관련 API")
 public class KakaoController {
     private final KakaoService kakaoService;
@@ -34,20 +30,24 @@ public class KakaoController {
 
     @Operation(summary = "카카오 로그인 페이지 URL 반환", description = "카카오 로그인 페이지로 리다이렉션하기 위한 URL을 반환합니다.")
     @GetMapping("/kakao/login")
-    public String loginPage(Model model) {
+    public ResponseEntity<String> loginPage() {
         String location = getCodePath + client_id + "&redirect_uri=" + redirect_uri;
-        model.addAttribute("location", location);
-        return "login";
+        return ResponseEntity.ok(location);
     }
 
-    @Operation(summary = "카카오 로그인 콜백", description = "카카오 로그인 인증 코드로 사용자 정보를 조회합니다.")
-    @GetMapping("/kakao/callback")
-    public ResponseEntity<LoginSuccessResponse> callback(@RequestParam("code") String code) {
+    @Operation(summary = "카카오 Access Token 요청", description = "카카오 인증 코드를 전달받아 Access Token과 사용자 정보를 반환합니다.")
+    @PostMapping("/kakao/token")
+    public ResponseEntity<LoginSuccessResponse> getAccessToken(@RequestParam("code") String code) {
         try {
+            // Step 1: 인증 코드를 기반으로 Access Token 생성
             LoginSuccessResponse userResponse = kakaoService.kakaoLogin(code);
-            return ResponseEntity.ok().body(userResponse);
+
+            // Step 2: Access Token 및 사용자 정보 반환
+            return ResponseEntity.ok(userResponse);
         } catch (Exception e) {
+            log.error("Access Token 생성 실패: {}", e.getMessage());
             return ResponseEntity.status(500).build();
         }
     }
+
 }
