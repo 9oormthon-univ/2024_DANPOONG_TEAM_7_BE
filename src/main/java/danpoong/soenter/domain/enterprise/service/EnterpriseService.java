@@ -1,14 +1,16 @@
 package danpoong.soenter.domain.enterprise.service;
 
 import danpoong.soenter.base.ApiResponse;
-import danpoong.soenter.domain.enterprise.dto.VisitConverter;
+import danpoong.soenter.domain.enterprise.converter.EnterpriseConverter;
+import danpoong.soenter.domain.enterprise.converter.VisitConverter;
+import danpoong.soenter.domain.enterprise.dto.EnterpriseDTO.EnterpriseResponse.GetEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.dto.VisitDTO.VisitResponse.GetVisitedEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.entity.Enterprise;
 import danpoong.soenter.domain.enterprise.entity.Region;
 import danpoong.soenter.domain.enterprise.entity.Visit;
 import danpoong.soenter.domain.enterprise.repository.EnterpriseRepository;
 import danpoong.soenter.domain.enterprise.repository.VisitRepository;
-import danpoong.soenter.domain.review.converter.ReviewConverter;
+import danpoong.soenter.domain.review.repository.ReviewRepository;
 import danpoong.soenter.domain.user.entity.User;
 import danpoong.soenter.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +28,22 @@ public class EnterpriseService {
     private final EnterpriseRepository enterpriseRepository;
     private final UserRepository userRepository;
     private final VisitRepository visitRepository;
+    private final ReviewRepository reviewRepository;
 
-    public ApiResponse<List<Enterprise>> getEnterprisesByRegion(Region region) {
+    public ApiResponse<List<GetEnterpriseResponse>> getEnterprisesByRegion(Region region) {
         try {
+            // 지역별 기업 목록 가져오기
             List<Enterprise> enterprises = enterpriseRepository.findAllByRegion(region);
-            return ApiResponse.onSuccess(enterprises);
+
+            // 각 기업에 대한 리뷰 총합을 포함한 DTO 생성
+            List<GetEnterpriseResponse> response = enterprises.stream()
+                    .map(enterprise -> EnterpriseConverter.toEnterpriseResponse(
+                            enterprise,
+                            reviewRepository.countByEnterprise_EnterpriseId(enterprise.getEnterpriseId()) // 리뷰 총합
+                    ))
+                    .collect(Collectors.toList());
+
+            return ApiResponse.onSuccess(response);
         } catch (Exception e) {
             return ApiResponse.onFailure("500", "지역별 기업 정보를 가져오는 데 실패했습니다.", null);
         }
