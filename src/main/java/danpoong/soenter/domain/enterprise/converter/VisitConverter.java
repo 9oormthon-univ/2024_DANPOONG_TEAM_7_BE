@@ -1,4 +1,4 @@
-package danpoong.soenter.domain.enterprise.dto;
+package danpoong.soenter.domain.enterprise.converter;
 
 import danpoong.soenter.domain.enterprise.entity.Enterprise;
 import danpoong.soenter.domain.enterprise.dto.VisitDTO.VisitResponse.GetVisitedEnterpriseResponse;

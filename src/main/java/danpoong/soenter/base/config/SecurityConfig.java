@@ -37,7 +37,7 @@ public class SecurityConfig {
             "/manifest.json",
             "/",
             "/health",
-            "http://localhost:5137",
+            "http://localhost:5173",
             "http://localhost:8080",
             "https://api.ssoenter.store",
             "/swagger-ui.html",

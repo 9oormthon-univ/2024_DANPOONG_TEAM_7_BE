@@ -1,6 +1,7 @@
 package danpoong.soenter.domain.enterprise.controller;
 
 import danpoong.soenter.base.ApiResponse;
+import danpoong.soenter.domain.enterprise.dto.EnterpriseDTO.EnterpriseResponse.GetEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.dto.VisitDTO.VisitResponse.GetVisitedEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.service.EnterpriseService;
 import danpoong.soenter.domain.enterprise.entity.Enterprise;
@@ -26,9 +27,12 @@ public class EnterpriseController {
 
     @Operation(summary = "지역별 기업 조회", description = "특정 지역에 속한 기업 목록을 반환합니다.")
     @GetMapping("/{region}")
-    public ApiResponse<List<Enterprise>> getEnterprisesByRegion(@PathVariable("region") Region region) {
-        return enterpriseService.getEnterprisesByRegion(region);
-    }
+    public ApiResponse<List<GetEnterpriseResponse>> getEnterprisesByRegion(@PathVariable("region") Region region) {
+        try {
+            return enterpriseService.getEnterprisesByRegion(region);
+        } catch (IllegalArgumentException e) {
+            return ApiResponse.onFailure("400", "Invalid region value. Please check the request.", null);
+        }    }
 
     @GetMapping("/users/visit")
     @Operation(summary = "사용자가 방문한 기업 조회 API", description = "사용자가 방문한 모든 기업을 조회합니다.")
