@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,8 @@ public class KakaoController {
     private String client_id;
     @Value(("${kakao.redirect_uri}"))
     private String redirect_uri;
+    @Value(("${kakao.logout_redirect_uri}"))
+    private String logout_redirect_uri;
 
     @Operation(summary = "카카오 로그인 페이지 URL 반환", description = "카카오 로그인 페이지로 리다이렉션하기 위한 URL을 반환합니다.")
     @GetMapping("/kakao/login")
@@ -50,4 +53,29 @@ public class KakaoController {
         }
     }
 
+    @Operation(summary = "카카오 로그아웃", description = "Authorization 헤더의 Access Token을 기반으로 카카오 로그아웃을 수행합니다.")
+    @PostMapping("/kakao/logout")
+    public ResponseEntity<String> logout(Authentication authentication) {
+        try {
+            return ResponseEntity.ok(kakaoService.kakaoLogout(authentication.getName()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("로그아웃 처리 실패");
+        }
+    }
+
+    @Operation(summary = "카카오 계정과 함께 로그아웃", description = "카카오 계정과 서비스 로그아웃을 함께 수행합니다.")
+    @GetMapping("/kakao/account-logout")
+    public ResponseEntity<String> logoutWithKakaoAccount() {
+        try {
+            // 카카오 계정과 함께 로그아웃 URL 생성
+            String logoutUrl = "https://kauth.kakao.com/oauth/logout"
+                    + "?client_id=" + client_id
+                    + "&logout_redirect_uri=" + logout_redirect_uri;
+
+            return ResponseEntity.ok(logoutUrl);
+        } catch (Exception e) {
+            log.error("카카오 계정과 함께 로그아웃 실패: {}", e.getMessage());
+            return ResponseEntity.status(500).body("카카오 계정과 함께 로그아웃 처리 실패");
+        }
+    }
 }

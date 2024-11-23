@@ -19,6 +19,7 @@ jobs:
       KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       REDIRECT_URI:  ${{ secrets.REDIRECT_URI }}
+      LOGOUT_REDIRECT_URI: ${{ secrets.LOGOUT_REDIRECT_URI }}
 
     steps:
       - uses: actions/checkout@v4
@@ -72,6 +73,7 @@ jobs:
             echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> ~/.env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ~/.env
             echo "REDIRECT_URI=${{ secrets.REDIRECT_URI }}" >> ~/.env
+            echo "LOGOUT_REDIRECT_URI=${{ secrets.LOGOUT_REDIRECT_URI }}" >> ~/.env
             
             # 새 컨테이너 실행 및 환경 변수 전달
             sudo docker run -d --log-driver=syslog --name docker-test -p 8080:8080 \

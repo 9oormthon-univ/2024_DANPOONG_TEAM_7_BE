@@ -34,7 +34,14 @@ public class User {
     @Column
     private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인 : null)
 
+    @Column
+    private String kakaoAccess;
+
     public void updateBirthDate(LocalDate birth) {
         this.birth = birth;
+    }
+
+    public void updateKakaoAccess(String kakaoAccess) {
+        this.kakaoAccess = kakaoAccess;
     }
 }
