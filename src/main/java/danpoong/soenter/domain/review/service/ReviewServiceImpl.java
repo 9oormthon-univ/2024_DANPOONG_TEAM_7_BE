@@ -137,7 +137,7 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> reviews = reviewRepository.findByEnterprise(enterprise);
 
         return reviews.stream()
-                .map(review -> ReviewConverter.toEnterpriseReviewResponse(review, tagListRepository.findByReview(review)))
+                .map(review -> ReviewConverter.toEnterpriseReviewResponse(review, enterprise.getSocialPurpose(), tagListRepository.findByReview(review)))
                 .collect(Collectors.toList());
     }
 }

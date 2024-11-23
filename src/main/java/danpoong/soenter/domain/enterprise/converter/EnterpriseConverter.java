@@ -11,6 +11,7 @@ public class EnterpriseConverter {
                 .region(enterprise.getRegion())
                 .isCooperative(enterprise.getIs_cooperative())
                 .certificationNumber(enterprise.getCertificationNumber())
+                .socialPurpose(enterprise.getSocialPurpose())
                 .type(enterprise.getType())
                 .city(enterprise.getCity())
                 .district(enterprise.getDistrict())

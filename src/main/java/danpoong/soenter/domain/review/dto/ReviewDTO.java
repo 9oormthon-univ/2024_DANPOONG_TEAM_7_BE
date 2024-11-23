@@ -61,6 +61,7 @@ public class ReviewDTO {
         @Builder
         public static class GetEnterpriseReviewResponse {
             private Long reviewId;
+            private String socialPurpose;
             private String userName;
             private String content;
             private LocalDate createAt;

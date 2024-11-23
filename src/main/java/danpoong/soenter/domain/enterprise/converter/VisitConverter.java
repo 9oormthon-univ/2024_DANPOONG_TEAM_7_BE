@@ -7,6 +7,7 @@ public class VisitConverter {
         return GetVisitedEnterpriseResponse.builder()
                 .enterpriseId(enterprise.getEnterpriseId())
                 .enterpriseName(enterprise.getName())
+                .socialPurpose(enterprise.getSocialPurpose())
                 .city(enterprise.getCity())
                 .district(enterprise.getDistrict())
                 .website(enterprise.getWebsite())
