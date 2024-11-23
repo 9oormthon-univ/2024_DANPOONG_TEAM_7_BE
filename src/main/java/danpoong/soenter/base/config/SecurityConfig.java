@@ -40,6 +40,7 @@ public class SecurityConfig {
             "http://localhost:5173",
             "http://localhost:8080",
             "https://api.ssoenter.store",
+            "https://soenter.vercel.app/",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**",
