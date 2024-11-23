@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,4 +51,13 @@ public class KakaoController {
         }
     }
 
+    @Operation(summary = "카카오 로그아웃", description = "Authorization 헤더의 Access Token을 기반으로 카카오 로그아웃을 수행합니다.")
+    @PostMapping("/kakao/logout")
+    public ResponseEntity<String> logout(Authentication authentication) {
+        try {
+            return ResponseEntity.ok(kakaoService.kakaoLogout(authentication.getName()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("로그아웃 처리 실패");
+        }
+    }
 }

@@ -92,6 +92,14 @@ public class KakaoService {
             userRepository.save(newUser);
         }
 
+        User user = userRepository.findByEmail(userInfo.getKakaoAccount().email).orElse(null);
+        if (user.getKakaoAccess() == null || user.getKakaoAccess().isEmpty()) {
+            System.out.println("ok");
+            // kakaoAccessToken이 비어 있다면 업데이트
+            user.updateKakaoAccess(accessToken);
+            userRepository.save(user);
+        }
+
         return userInfo;
     }
 
@@ -118,5 +126,32 @@ public class KakaoService {
 
     private boolean isDuplicateEmail(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public String kakaoLogout(String userId) {
+        try {
+            User user = userRepository.findById(Long.valueOf(userId))
+                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+            String accessToken = user.getKakaoAccess();
+
+            String result = WebClient.create(KAUTH_USER_URL_HOST).post()
+                    .uri(uriBuilder -> uriBuilder
+                            .scheme("https")
+                            .path("/oauth/logout")
+                            .build(true))
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                    .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            user.updateKakaoAccess(null);
+            userRepository.save(user);
+
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException("Kakao logout request failed", e);
+        }
     }
 }
