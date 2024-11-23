@@ -154,4 +154,5 @@ public class KakaoService {
             throw new RuntimeException("Kakao logout request failed", e);
         }
     }
+
 }
