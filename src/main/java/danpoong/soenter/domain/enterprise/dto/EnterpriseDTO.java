@@ -15,6 +15,7 @@ public class EnterpriseDTO {
             private Region region;
             private Boolean isCooperative;
             private String certificationNumber;
+            private String socialPurpose;
             private String type;
             private String city;
             private String district;

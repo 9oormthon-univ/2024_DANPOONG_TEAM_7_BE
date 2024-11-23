@@ -10,6 +10,7 @@ public class VisitDTO {
         public static class GetVisitedEnterpriseResponse {
             private Long enterpriseId;
             private String enterpriseName;
+            private String socialPurpose;
             private String city;
             private String district;
             private String website;

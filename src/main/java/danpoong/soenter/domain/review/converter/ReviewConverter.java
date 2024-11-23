@@ -64,13 +64,14 @@ public class ReviewConverter {
                 .build();
     }
 
-    public static GetEnterpriseReviewResponse toEnterpriseReviewResponse(Review review, List<TagList> tagList) {
+    public static GetEnterpriseReviewResponse toEnterpriseReviewResponse(Review review, String socialPurpose, List<TagList> tagList) {
         List<Integer> tagNumbers = tagList.stream()
                 .map(TagList::getTagNum)
                 .collect(Collectors.toList());
 
         return GetEnterpriseReviewResponse.builder()
                 .reviewId(review.getReviewId())
+                .socialPurpose(socialPurpose)
                 .userName(review.getUser().getName())
                 .content(review.getContent())
                 .createAt(review.getCreateAt())
