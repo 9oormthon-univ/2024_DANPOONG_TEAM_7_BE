@@ -4,6 +4,7 @@ import danpoong.soenter.base.kakao.response.LoginSuccessResponse;
 import danpoong.soenter.base.kakao.service.KakaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,6 +77,28 @@ public class KakaoController {
         } catch (Exception e) {
             log.error("카카오 계정과 함께 로그아웃 실패: {}", e.getMessage());
             return ResponseEntity.status(500).body("카카오 계정과 함께 로그아웃 처리 실패");
+        }
+    }
+
+    @Operation(summary = "카카오 인증 콜백", description = "카카오 인증 후 백엔드에서 모든 처리를 수행하고 프론트엔드로 리다이렉트합니다.")
+    @GetMapping("/kakao/callback")
+    public ResponseEntity<Void> kakaoCallback(@RequestParam("code") String code, HttpServletResponse response) {
+        try {
+            // Step 1: 인증 코드를 기반으로 Access Token 생성
+            LoginSuccessResponse userResponse = kakaoService.kakaoLogin(code);
+
+            // Step 2: 프론트엔드로 리다이렉트 URL 생성
+            String redirectUrl = "http://localhost:5173/loginSuccess"
+                    + "?userId=" + userResponse.getUserId()
+                    + "&accessToken=" + userResponse.getAccessToken()
+                    + "&kakaoAccessToken=" + userResponse.getKakaoAccessToken();
+
+            // Step 3: 프론트엔드로 리다이렉트
+            response.sendRedirect(redirectUrl);
+            return null;
+        } catch (Exception e) {
+            log.error("Access Token 생성 실패: {}", e.getMessage());
+            return ResponseEntity.status(500).build();
         }
     }
 }
