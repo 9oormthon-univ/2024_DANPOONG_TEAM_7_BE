@@ -29,6 +29,9 @@ public class User {
     private LocalDate birth;
 
     @Column
+    private String city;
+
+    @Column
     private String socialType;
 
     @Column
@@ -43,5 +46,9 @@ public class User {
 
     public void updateKakaoAccess(String kakaoAccess) {
         this.kakaoAccess = kakaoAccess;
+    }
+
+    public void updateCityDate(String city) {
+        this.city = city;
     }
 }
