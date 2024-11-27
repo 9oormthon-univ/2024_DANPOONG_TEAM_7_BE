@@ -13,6 +13,12 @@ public class UserDTO {
         public static class UpdateBirthRequest {
             private LocalDate birth;
         }
+
+        @Getter
+        @NoArgsConstructor
+        public static class UpdateCityRequest {
+            private String city;
+        }
     }
 
     public static class UserResponse {
@@ -32,6 +38,18 @@ public class UserDTO {
             private String email;
             private String socialType;
             private LocalDate birth;
+            private String city;
+        }
+
+        @Getter
+        @Builder
+        public static class UpdateCityResponse {
+            private Long userId;
+            private String name;
+            private String email;
+            private String socialType;
+            private LocalDate birth;
+            private String city;
         }
     }
 }

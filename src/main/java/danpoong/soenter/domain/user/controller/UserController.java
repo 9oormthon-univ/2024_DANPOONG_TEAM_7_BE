@@ -1,6 +1,8 @@
 package danpoong.soenter.domain.user.controller;
 
 import danpoong.soenter.base.ApiResponse;
+import danpoong.soenter.domain.user.dto.UserDTO.UserResponse.UpdateCityResponse;
+import danpoong.soenter.domain.user.dto.UserDTO.UserRequest.UpdateCityRequest;
 import danpoong.soenter.domain.user.dto.UserDTO.UserResponse.UpdateBirthResponse;
 import danpoong.soenter.domain.user.dto.UserDTO.UserRequest.UpdateBirthRequest;
 import danpoong.soenter.domain.user.dto.UserDTO.UserResponse.GetUserDetailResponse;
@@ -34,5 +36,14 @@ public class UserController {
 
     public ApiResponse<UpdateBirthResponse> updateBirthDate(Authentication authentication, @RequestBody UpdateBirthRequest request) {
         return ApiResponse.onSuccess(userService.updateBirth(authentication.getName(), request));
+    }
+
+    @PatchMapping("/city")
+    @Operation(summary = "회원 지역 업데이트 API", description = "사용자의 지역을 업데이트합니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+
+    public ApiResponse<UpdateCityResponse> updateBirthDate(Authentication authentication, @RequestBody UpdateCityRequest request) {
+        return ApiResponse.onSuccess(userService.updateCity(authentication.getName(), request));
     }
 }
