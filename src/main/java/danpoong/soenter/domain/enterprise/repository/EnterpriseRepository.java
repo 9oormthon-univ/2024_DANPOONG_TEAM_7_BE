@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
     List<Enterprise> findAllByRegion(Region region);
+    List<Enterprise> findAllByRegionAndCity(Region region, String city);
 }

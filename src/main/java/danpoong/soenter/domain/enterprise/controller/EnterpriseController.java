@@ -42,4 +42,17 @@ public class EnterpriseController {
         List<GetVisitedEnterpriseResponse>response = enterpriseService.getVisitedEnterprises(authentication.getName());
         return ApiResponse.onSuccess(response);
     }
+
+    @Operation(summary = "지역 및 도시별 기업 조회", description = "특정 지역과 도시에 속한 기업 목록을 반환합니다.")
+    @GetMapping("/{region}/{city}")
+    public ApiResponse<List<GetEnterpriseResponse>> getEnterprisesByRegionAndCity(
+            @PathVariable("region") Region region,
+            @PathVariable("city") String city) {
+        try {
+            return enterpriseService.getEnterprisesByRegionAndCity(region, city);
+        } catch (IllegalArgumentException e) {
+            return ApiResponse.onFailure("400", "Invalid region or city value. Please check the request.", null);
+        }
+    }
+
 }
