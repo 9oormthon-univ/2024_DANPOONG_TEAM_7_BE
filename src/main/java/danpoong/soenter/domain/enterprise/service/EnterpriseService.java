@@ -59,4 +59,24 @@ public class EnterpriseService {
                 .map(VisitConverter::toVisitedEnterpriseResponse)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public ApiResponse<List<GetEnterpriseResponse>> getEnterprisesByRegionAndCity(Region region, String city) {
+        try {
+            // 지역 및 도시별 기업 목록 가져오기
+            List<Enterprise> enterprises = enterpriseRepository.findAllByRegionAndCity(region, city);
+
+            // 각 기업에 대한 리뷰 총합을 포함한 DTO 생성
+            List<GetEnterpriseResponse> response = enterprises.stream()
+                    .map(enterprise -> EnterpriseConverter.toEnterpriseResponse(
+                            enterprise,
+                            reviewRepository.countByEnterprise_EnterpriseId(enterprise.getEnterpriseId()) // 리뷰 총합
+                    ))
+                    .collect(Collectors.toList());
+
+            return ApiResponse.onSuccess(response);
+        } catch (Exception e) {
+            return ApiResponse.onFailure("500", "지역 및 도시별 기업 정보를 가져오는 데 실패했습니다.", null);
+        }
+    }
 }
