@@ -1,19 +1,16 @@
 package danpoong.soenter.domain.enterprise.controller;
 
 import danpoong.soenter.base.ApiResponse;
+import danpoong.soenter.domain.enterprise.dto.EnterpriseDTO.EnterpriseRequest.EnterpriseVerificationRequest;
 import danpoong.soenter.domain.enterprise.dto.EnterpriseDTO.EnterpriseResponse.GetEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.dto.VisitDTO.VisitResponse.GetVisitedEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.service.EnterpriseService;
-import danpoong.soenter.domain.enterprise.entity.Enterprise;
 import danpoong.soenter.domain.enterprise.entity.Region;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,4 +52,18 @@ public class EnterpriseController {
         }
     }
 
+    @Operation(summary = "기업 인증", description = "사용자가 입력한 정보로 기업을 인증하고 사용자와 매핑합니다.")
+    @PostMapping("/verify")
+    public ApiResponse<String> verifyEnterprise(
+            @RequestBody EnterpriseVerificationRequest request,
+            Authentication authentication) {
+        try {
+            enterpriseService.verifyEnterprise(authentication.getName(), request);
+            return ApiResponse.onSuccess("기업 인증이 성공적으로 완료되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ApiResponse.onFailure("400", e.getMessage(), null);
+        } catch (Exception e) {
+            return ApiResponse.onFailure("500", "기업 인증 중 문제가 발생했습니다.", null);
+        }
+    }
 }

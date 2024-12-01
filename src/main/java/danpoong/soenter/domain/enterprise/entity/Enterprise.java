@@ -1,7 +1,10 @@
 package danpoong.soenter.domain.enterprise.entity;
 
+import danpoong.soenter.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -60,5 +63,8 @@ public class Enterprise {
 
     @Column
     private Integer certificationYear;
+
+    @OneToMany(mappedBy = "enterprise")
+    private List<User> users;
 }
 
