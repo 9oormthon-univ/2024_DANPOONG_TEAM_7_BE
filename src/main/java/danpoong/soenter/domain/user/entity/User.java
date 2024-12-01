@@ -1,5 +1,6 @@
 package danpoong.soenter.domain.user.entity;
 
+import danpoong.soenter.domain.enterprise.entity.Enterprise;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +41,10 @@ public class User {
     @Column
     private String kakaoAccess;
 
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
+
     public void updateBirthDate(LocalDate birth) {
         this.birth = birth;
     }
@@ -50,5 +55,9 @@ public class User {
 
     public void updateCityDate(String city) {
         this.city = city;
+    }
+
+    public void updateEnterprise(Long enterpriseId) {
+        this.enterprise = Enterprise.builder().enterpriseId(enterpriseId).build();
     }
 }

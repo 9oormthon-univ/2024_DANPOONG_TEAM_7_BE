@@ -3,6 +3,7 @@ package danpoong.soenter.domain.enterprise.service;
 import danpoong.soenter.base.ApiResponse;
 import danpoong.soenter.domain.enterprise.converter.EnterpriseConverter;
 import danpoong.soenter.domain.enterprise.converter.VisitConverter;
+import danpoong.soenter.domain.enterprise.dto.EnterpriseDTO.EnterpriseRequest.EnterpriseVerificationRequest;
 import danpoong.soenter.domain.enterprise.dto.EnterpriseDTO.EnterpriseResponse.GetEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.dto.VisitDTO.VisitResponse.GetVisitedEnterpriseResponse;
 import danpoong.soenter.domain.enterprise.entity.Enterprise;
@@ -78,5 +79,22 @@ public class EnterpriseService {
         } catch (Exception e) {
             return ApiResponse.onFailure("500", "지역 및 도시별 기업 정보를 가져오는 데 실패했습니다.", null);
         }
+    }
+
+    public void verifyEnterprise(String userId, EnterpriseVerificationRequest request) {
+        // 기업 검색
+        Enterprise enterprise = enterpriseRepository.findByBusinessRegistrationNumberAndRepresentativeNameAndName(
+                request.getBusinessRegistrationNumber(),
+                request.getRepresentativeName(),
+                request.getName()
+        ).orElseThrow(() -> new IllegalArgumentException("일치하는 기업을 찾을 수 없습니다."));
+
+        // 사용자 조회
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // 사용자와 기업 매핑
+        user.updateEnterprise(enterprise.getEnterpriseId());
+        userRepository.save(user); // 변경사항 저장
     }
 }
