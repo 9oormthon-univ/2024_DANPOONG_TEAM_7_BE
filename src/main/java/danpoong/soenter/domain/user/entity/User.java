@@ -41,6 +41,10 @@ public class User {
     @Column
     private String kakaoAccess;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role = UserRole.USER;
+
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
@@ -59,5 +63,9 @@ public class User {
 
     public void updateEnterprise(Long enterpriseId) {
         this.enterprise = Enterprise.builder().enterpriseId(enterpriseId).build();
+    }
+
+    public void upgradeToEnterprise() {
+        this.role = UserRole.ENTERPRISE;
     }
 }

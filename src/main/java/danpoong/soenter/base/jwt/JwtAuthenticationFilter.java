@@ -1,11 +1,14 @@
 package danpoong.soenter.base.jwt;
 
+import danpoong.soenter.domain.user.entity.UserRole;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 //모든 요청에 대해 실행되며 요청의 Authorization 헤더에서 jwt 추출, 검증해 사용자 인증
 @Component
@@ -29,8 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtTokenProvider.validateToken(token) == JwtValidationType.VALID_JWT) {
                 Long userId = jwtTokenProvider.getUserIdFromJwt(token);
                 String kakaoAccessTokenFromJwt = jwtTokenProvider.getKakaoAccessTokenFromJwt(token);
-                //userId를 principal(주체)로 설정
-                UserAuthentication authentication = new UserAuthentication(userId.toString(), null, null, kakaoAccessTokenFromJwt);
+                UserRole role = jwtTokenProvider.getRoleFromJwt(token);
+                // 권한 정보 생성
+                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
+                //userId를 principal(주체)로 설정 + role 추가
+                UserAuthentication authentication = new UserAuthentication(userId.toString(), null, authorities, kakaoAccessTokenFromJwt, role);
                 //IP 주소, 세션 ID 같은 요청 관련 정보를 포함하는 객체를 생성해서 추가적인 인증 정보 설정
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 //spring security의 인증 컨텍스트에 설정
