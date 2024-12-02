@@ -51,6 +51,11 @@ public class SecurityConfig {
             "/api/**"
     };
 
+    // 일단 enterprise 사용자용 엔드포인트들
+    private static final String[] AUTH_ENTERPRISE_WHITELIST = {
+            "/api/admin/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -65,6 +70,7 @@ public class SecurityConfig {
 
         // Swagger 경로를 허용 목록에 포함
         http.authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(AUTH_ENTERPRISE_WHITELIST).hasRole("ENTERPRISE");
                     auth.requestMatchers(AUTH_WHITELIST).permitAll();
                     auth.anyRequest().authenticated();
                 })

@@ -1,5 +1,8 @@
 package danpoong.soenter.base.jwt;
 
+import danpoong.soenter.domain.user.entity.User;
+import danpoong.soenter.domain.user.entity.UserRole;
+import danpoong.soenter.domain.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -20,6 +23,8 @@ public class JwtTokenProvider {
     private static final String USER_ID = "userId";
     private static final String KAKAO_ACCESS_TOKEN = "kakaoAccessToken";
     private static final Long TOKEN_EXPIRATION_TIME = 60 * 60 * 1000L; //1시간
+    private static final String ROLE = "role";  // role
+    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String JWT_SECRET; //jwt 서명을 위한 비밀키
@@ -39,7 +44,12 @@ public class JwtTokenProvider {
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + TOKEN_EXPIRATION_TIME));
 
+        Long userId = Long.valueOf(authentication.getPrincipal().toString());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         claims.put(USER_ID, authentication.getPrincipal());
+        claims.put(ROLE, user.getRole().name());  // role 정보 추가
         if (authentication instanceof UserAuthentication) {
             claims.put(KAKAO_ACCESS_TOKEN, ((UserAuthentication) authentication).getKakaoAccessToken());
         }
@@ -65,6 +75,12 @@ public class JwtTokenProvider {
     public String getKakaoAccessTokenFromJwt(String token) {
         Claims claims = getBody(token);
         return claims.get(KAKAO_ACCESS_TOKEN).toString();
+    }
+
+    // role 정보를 가져오는 메서드
+    public UserRole getRoleFromJwt(String token) {
+        Claims claims = getBody(token);
+        return UserRole.valueOf(claims.get(ROLE).toString());
     }
 
     //토큰 유효성 검사

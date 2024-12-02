@@ -6,6 +6,7 @@ import danpoong.soenter.base.kakao.response.KakaoTokenResponseDto;
 import danpoong.soenter.base.kakao.response.KakaoUserInfoResponseDto;
 import danpoong.soenter.base.kakao.response.LoginSuccessResponse;
 import danpoong.soenter.domain.user.entity.User;
+import danpoong.soenter.domain.user.entity.UserRole;
 import danpoong.soenter.domain.user.repository.UserRepository;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.Collections;
+import java.util.List;
 
 
 @Slf4j
@@ -88,6 +94,7 @@ public class KakaoService {
                     .email(userInfo.getKakaoAccount().email)
                     .name(userInfo.getKakaoAccount().getProfile().nickName)
                     .socialType("kakao")
+                    .role(UserRole.USER)
                     .build();
             userRepository.save(newUser);
         }
@@ -110,16 +117,24 @@ public class KakaoService {
     }
 
     public LoginSuccessResponse getTokenByUserId(Long userId, String kakaoAccessToken) {
+        // 사용자 role 가져오기
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Not Found User"));
+
+        // 권한 정보 생성
+        List<GrantedAuthority> authorities = Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+        );
+
         UserAuthentication userAuthentication = new UserAuthentication(
                 userId,
                 null,
-                null,
-                kakaoAccessToken);
+                authorities,
+                kakaoAccessToken,
+                user.getRole()
+        );
 
         String accessToken = jwtTokenProvider.generateToken(userAuthentication);
-
-        User users = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Not Found User"));
-
 
         return new LoginSuccessResponse(userId, accessToken, kakaoAccessToken);
     }
