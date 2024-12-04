@@ -53,7 +53,8 @@ public class SecurityConfig {
 
     // 일단 enterprise 사용자용 엔드포인트들
     private static final String[] AUTH_ENTERPRISE_WHITELIST = {
-            "/api/programs/admin/**"
+            "/api/programs/admin/**",
+            "/api/jobs/admin/**"
     };
 
     @Bean
