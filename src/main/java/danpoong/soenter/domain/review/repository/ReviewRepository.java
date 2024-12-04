@@ -13,4 +13,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByUser(User user);
     List<Review> findByEnterprise(Enterprise enterprise);
     int countByEnterprise_EnterpriseId(Long enterpriseId);
+    long countByEnterprise(Enterprise enterprise);
 }

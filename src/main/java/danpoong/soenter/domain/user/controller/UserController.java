@@ -6,6 +6,7 @@ import danpoong.soenter.domain.user.dto.UserDTO.UserRequest.UpdateCityRequest;
 import danpoong.soenter.domain.user.dto.UserDTO.UserResponse.UpdateBirthResponse;
 import danpoong.soenter.domain.user.dto.UserDTO.UserRequest.UpdateBirthRequest;
 import danpoong.soenter.domain.user.dto.UserDTO.UserResponse.GetUserDetailResponse;
+import danpoong.soenter.domain.user.dto.UserDTO.UserResponse.GetEnterpriseUserResponse;
 import danpoong.soenter.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,5 +46,14 @@ public class UserController {
 
     public ApiResponse<UpdateCityResponse> updateBirthDate(Authentication authentication, @RequestBody UpdateCityRequest request) {
         return ApiResponse.onSuccess(userService.updateCity(authentication.getName(), request));
+    }
+
+    @GetMapping("/enterprise")
+    @Operation(summary = "기업 회원 프로필 조회 API", description = "기업 회원의 상세 정보를 조회합니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON400", description = "잘못된 요청입니다.")
+    public ApiResponse<GetEnterpriseUserResponse> getEnterpriseUserDetail(Authentication authentication) {
+        GetEnterpriseUserResponse userDetail = userService.getEnterpriseUserDetail(authentication.getName());
+        return ApiResponse.onSuccess(userDetail);
     }
 }

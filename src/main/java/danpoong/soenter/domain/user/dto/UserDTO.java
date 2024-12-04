@@ -1,5 +1,6 @@
 package danpoong.soenter.domain.user.dto;
 
+import danpoong.soenter.domain.user.entity.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class UserDTO {
             private String name;
             private String email;
             private LocalDate birth;
+            private UserRole userRole;
         }
 
         @Getter
@@ -50,6 +52,22 @@ public class UserDTO {
             private String socialType;
             private LocalDate birth;
             private String city;
+        }
+
+        @Getter
+        @Builder
+        public static class GetEnterpriseUserResponse {
+            private Long userId;
+            private String name;
+            private String email;
+            private LocalDate birth;
+            private UserRole userRole;
+
+            private String enterpriseName;
+            private long reviewCount;
+
+            private long programCount;
+            private long jobCount;
         }
     }
 }
