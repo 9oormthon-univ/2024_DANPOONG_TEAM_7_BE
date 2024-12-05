@@ -41,6 +41,7 @@ public class ProgramDTO {
         @Builder
         public static class GetProgramResponse {
             private Long programId;
+            private Long enterpriseId;
             private String enterpriseName;
             private String title;
             private String field;

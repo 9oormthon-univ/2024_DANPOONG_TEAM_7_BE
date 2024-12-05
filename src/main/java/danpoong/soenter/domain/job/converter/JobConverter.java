@@ -56,6 +56,7 @@ public class JobConverter {
         return GetJobResponse.builder()
                 .jobId(job.getJobId())
                 .title(job.getTitle())
+                .enterpriseId(enterprise.getEnterpriseId())
                 .enterpriseName(enterprise.getName())
                 .field(job.getField())
                 .duty(job.getDuty())
