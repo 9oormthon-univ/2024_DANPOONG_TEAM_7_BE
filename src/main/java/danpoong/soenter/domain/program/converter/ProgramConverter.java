@@ -40,6 +40,7 @@ public class ProgramConverter {
     public static GetProgramResponse toGetProgramResponse(Program program) {
         return GetProgramResponse.builder()
                 .programId(program.getProgramId())
+                .enterpriseId(program.getEnterprise().getEnterpriseId())
                 .enterpriseName(program.getEnterprise().getName())
                 .title(program.getTitle())
                 .field(program.getField())

@@ -61,6 +61,7 @@ public class JobDTO {
         public static class GetJobResponse {
             private Long jobId;
             private String title;
+            private Long enterpriseId;
             private String enterpriseName;
             private String field;
             private String duty;
