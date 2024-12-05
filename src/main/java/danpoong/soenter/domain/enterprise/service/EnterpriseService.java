@@ -95,6 +95,10 @@ public class EnterpriseService {
 
         // 사용자와 기업 매핑
         user.updateEnterprise(enterprise.getEnterpriseId());
+
+        // 사용자 Role Enterprise 로 변경
+        user.upgradeToEnterprise();
+
         userRepository.save(user); // 변경사항 저장
     }
 }
